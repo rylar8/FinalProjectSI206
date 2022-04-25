@@ -94,19 +94,70 @@ def ten_years(recent_year):
         d[year] = getAttendancePrem(year)
         year = one_year_less(year)
     return d
-        
+
+def avgHomeAttendance(dict):
+    d = {}
+    for x,y in dict.items():
+        sum = 0
+        for attendance in y:
+            sum += attendance
+        avg = sum / 20
+        avg = round(avg, 1)
+        d[x] = avg
+    return d
+
+def topTeamsAttendance(year, dict):
+    for x,y in dict.items():
+        if x == year:
+            return y[0]
+        continue
+
+def avgHomeAttendancebyYear(year, dict):
+    for x,y in dict.items():
+        sum = 0
+        for attendance in y:
+            sum += attendance
+        avg = sum / 20
+        avg = round(avg, 1)
+        if x== year:
+            return avg
+    return avg   
+    
+
 def createDatabase(db_name):
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path+'/'+db_name)
     cur = conn.cursor()
     
-    cur.execute('CREATE TABLE IF NOT EXISTS AttendancePremierLg (year_id INTEGER PRIMARY KEY, season TEXT, avgHomeAttendance INTEGER')
+    cur.execute('CREATE TABLE IF NOT EXISTS AttendancePremierLg (year_id INTEGER PRIMARY KEY, season TEXT, avgHomeAttendance INTEGER, topTeamsAttendance INTEGER)')
     conn.commit()
     return cur, conn
+
+# def delete(db_name):
+#     path = os.path.dirname(os.path.abspath(__file__))
+#     conn = sqlite3.connect(path+'/'+db_name)
+#     cur = conn.cursor()
+    
+#     cur.execute('DROP TABLE IF EXISTS AttendancePremierLg')
+#     conn.commit()
+#     return cur, conn
 
 def addData(year, db_name):
     cur, conn = createDatabase(db_name)
     data = ten_years(year)
+    i = 1
+    while i < 11:
+        if i == 1:
+            y = year
+        else:
+            y = one_year_less(y)
+        att = avgHomeAttendancebyYear(y, data)
+        top = topTeamsAttendance(y, data)
+        cur.execute('INSERT INTO AttendancePremierLg (year_id, season, avgHomeAttendance, topTeamsAttendance) VALUES (?, ?, ?, ?)', (i, y, att, top))
+        i += 1
+        conn.commit()
+    return
+
 
 # def get_teams_by_season(season):
 #     url = "https://football-web-pages1.p.rapidapi.com/league-table.json"
@@ -190,10 +241,11 @@ def main():
     # print(get_teams_by_season("2013-2014"))
     # print(getAttendancePrem("2021-2022"))
     # print(one_year_less("2021-2022"))
-    print(ten_years("2021-2022"))
+    # print(ten_years("2020-2021"))
+    addData("2020-2021", "AttendanceDatabase")
+    # print(avgHomeAttendancebyYear('2020-2021', ten_years('2020-2021'))) 
+    # delete("AttendanceDatabase")
     return 1
-
-
 
 
 
