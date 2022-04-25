@@ -29,6 +29,8 @@ def getMLBData():
         avgMLB = total//30
         avgDataMLB.append(avgMLB)
 
+        year += 1
+
     return avgDataMLB
 
 def getPremLgData():
@@ -38,12 +40,18 @@ def getPremLgData():
 
 def createLineGraphs():
     #Compare season by season based on average home attendance
+    dataMLB = getMLBData()
+    dataPremLg = getPremLgData()
 
 def createTeamComparison():
     #Compare top teams attendance
-
+    dataMLB = getMLBData()
+    dataPremLg = getPremLgData()
+    
 def createPieGraph():
     #Compare top teams proportion of total attendance
+    dataMLB = getMLBData()
+    dataPremLg = getPremLgData()
 
 def main():
     createTeamComparison()
