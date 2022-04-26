@@ -36,7 +36,7 @@ def getMLBData():
             avgDataMLB.append((avgMLB, topMLB))
 
         except:
-            avgDataMLB.append((0, 0)) #COVID year
+            avgDataMLB.append((0, (0,0))) #COVID year
 
         year += 1
 
@@ -69,10 +69,10 @@ def createLineGraphs():
 
     plt.plot(year, dataMLB, color='red', marker='o', label = 'MLB')
     plt.plot(year, dataPremLg, color = 'blue', marker = 'o', label = 'Premier League')
-    plt.title('MLB v Premier League Attendance', fontsize=14)
+    plt.title('MLB v Premier League Average Attendance', fontsize=14)
     plt.xlabel('Year', fontsize=14)
     plt.xticks(ticks = year)
-    plt.ylabel('Attendance', fontsize=14)
+    plt.ylabel('Average Attendance', fontsize=14)
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -82,16 +82,18 @@ def createTeamComparison():
     dataMLB = getMLBData()
     dataPremLg = getPremLgData()
 
-    dataMLB = [data[1] for data in dataMLB]
-    dataPremLg = [data[0][1] for data in dataPremLg]
+    dataMLB = int([data[1][0] for data in dataMLB][-3].replace(',', ''))
+    dataPremLg = [data[0][1] for data in dataPremLg][-2]
 
-    plt.barh(dataMLB, dataPremLg)
+    print(dataMLB, dataPremLg)
+
+    labels = ['MLB', 'Premier League']
+
+    plt.bar(labels, height= [dataMLB, dataPremLg])
     plt.xlabel('League')
-    plt.ylabel('Attendance')
-    plt.title('Top Teams Attendance')
-    plt.tight_layout()
+    plt.ylabel('Average Attendance')
+    plt.title("Top Team's Average Attendance: MLB v Premier League")
     plt.show()
-    
     
 def createPieGraph():
     #Compare top teams proportion of total attendance
