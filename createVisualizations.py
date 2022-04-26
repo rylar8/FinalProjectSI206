@@ -33,10 +33,10 @@ def getMLBData():
         try:
             topMLB = sorted(dataMLB, key = lambda tup: tup[0])[-1]
 
-            avgDataMLB.append((avgMLB, topMLB))
+            avgDataMLB.append((avgMLB, topMLB, total))
 
         except:
-            avgDataMLB.append((0, (0,0))) #COVID year
+            avgDataMLB.append((0, (0,0), 0)) #COVID year
 
         year += 1
 
@@ -85,8 +85,6 @@ def createTeamComparison():
     dataMLB = int([data[1][0] for data in dataMLB][-3].replace(',', ''))
     dataPremLg = [data[0][1] for data in dataPremLg][-2]
 
-    print(dataMLB, dataPremLg)
-
     labels = ['MLB', 'Premier League']
 
     plt.bar(labels, height= [dataMLB, dataPremLg])
@@ -100,9 +98,26 @@ def createPieGraph():
     dataMLB = getMLBData()
     dataPremLg = getPremLgData()
 
+    topTeamMLB = int([data[1][0] for data in dataMLB][-3].replace(',', ''))
+    topTeamPremLg = [data[0][1] for data in dataPremLg][-2]
+
+    totalMLB = [data[2] for data in dataMLB][-3]
+    totalPremLg = [data[0][1] for data in dataPremLg][-2] * 20
+
+    MLBlabels = 'Top Team', 'Rest of League'
+    Premlabels = 'Top Team', 'Rest of League'
+
+    fig, (ax1, ax2) = plt.subplots(2, 1)
+    fig.suptitle('Proportion of Attendance by Top Team')
+
+    ax1.pie([topTeamMLB, totalMLB], explode= (0.3, 0), labels= MLBlabels, autopct='%1.1f%%', shadow = True, textprops={'size': 'x-small'})
+    ax1.set_xlabel('MLB')
+
+    ax2.pie([topTeamPremLg, totalPremLg], explode= (0.3, 0), labels= Premlabels, autopct = '%1.1f%%', shadow = True, textprops={'size': 'x-small'})
+    ax2.set_xlabel('Premier League')
+    plt.show()
+
 def main():
     createTeamComparison()
-    #createLineGraphs()
-    #createPieGraph()
-
-main()
+    createLineGraphs()
+    createPieGraph()
