@@ -4,7 +4,7 @@ We will be comparing the attendance of Major League Baseball and Premier League 
 
 API / Website 1:
 
-https://www.transfermarkt.us/premier-league/besucherzahlen/wettbewerb/GB1/saison_id/2021 (Links to an external site.) 
+'https://www.worldfootball.net/attendance/eng-premier-league-2021-2022/1/' (Links to an external site.) 
 
 Data to collect
 All teams’ average attendance over last 3-4 years
